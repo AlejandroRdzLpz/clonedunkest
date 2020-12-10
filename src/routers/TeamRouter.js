@@ -8,5 +8,7 @@ const router = express.Router();
 
 router.post('/createTeam', verifyToken, TeamValidator.addTeam, TeamController.addTeam, UserController.addTeam)
 
+router.get('/teams', verifyToken, TeamController.getTeams)
+
 
 module.exports = router
