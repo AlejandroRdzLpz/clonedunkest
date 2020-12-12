@@ -10,4 +10,5 @@ module.exports = {
         Object.assign(user, body);
         return user.save();
     },
+    get: (id) => User.findById(id)
 }

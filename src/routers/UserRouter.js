@@ -5,6 +5,8 @@ const {verifyToken} = require('../middlewares/index')
 
 const router = express.Router();
 
+router.get('/users', verifyToken, UserController.get);
+
 router.patch('/users', verifyToken, UserValidator.update, UserController.update)
 
 

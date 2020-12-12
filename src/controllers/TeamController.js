@@ -23,5 +23,14 @@ module.exports = {
         } catch (err) {
             res.status(500).send({err})
         }
+    },
+    getTeams: async (req, res) => {
+        try {
+            const {id} = req.decoded;
+            const teams = await TeamService.getTeams(id);
+            res.status(200).send({teams})
+        } catch (err) {
+            res.status(500).send({err})
+        }
     }
 }

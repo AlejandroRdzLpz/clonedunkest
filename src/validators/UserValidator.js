@@ -31,5 +31,5 @@ module.exports = {
             email: Joi.string().email(),
             password: Joi.string(),
         })
-    })
+    }),
 }

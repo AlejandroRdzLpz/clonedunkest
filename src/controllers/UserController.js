@@ -63,4 +63,13 @@ module.exports = {
             res.status(400).json({error: err.message})
         }
     },
+    get: async (req, res) => {
+        try {
+            const {id} = req.decoded;
+            const user = await UserService.get(id);
+            res.status(200).json({user: user});
+        } catch (err) {
+            res.status(500).json({error: err.message});
+        }
+    }
 }

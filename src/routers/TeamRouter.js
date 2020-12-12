@@ -6,6 +6,8 @@ const {verifyToken} = require('../middlewares/index')
 
 const router = express.Router();
 
+router.get('/teams', verifyToken, TeamController.getTeams);
+
 router.post('/createTeam', verifyToken, TeamController.addTeam)
 
 router.delete('/teams/:id', verifyToken, TeamValidator.delete, TeamController.deleteTeam)
