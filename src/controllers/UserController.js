@@ -1,3 +1,4 @@
+const { User } = require('../models/index.js');
 const {UserService} = require('../services/index.js')
 const auth = require('../utils/auth')
 
@@ -62,21 +63,4 @@ module.exports = {
             res.status(400).json({error: err.message})
         }
     },
-    addTeam: async (req, res) => {
-        try {
-            const {body, decoded} = req;
-            const addTeam = await UserService.addTeam(decoded.id, body)
-
-            res.status(200).json({
-                success: true,
-                payload: addTeam
-            })
-        } catch (err) {
-            console.log(err)
-            res.status(500).json({
-                success: false,
-                payload: err.message
-            })
-        }
-    }
 }

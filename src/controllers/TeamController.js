@@ -1,36 +1,27 @@
 const {TeamService} = require('../services/index.js')
 
 module.exports = {
-    addTeam: async (req, res, next) => {
-        
+    addTeam: async (req, res) => {
+        const {body, decoded} = req;
         try {
-            const {body} = req;
-
-            const payload = await TeamService.addTeam(body);
-
-            next()
+            const {is_principal, team_name, players} = body;
+            const {id} = decoded;
+            const team = await TeamService.addTeam({user_id: id, is_principal, team_name, players});
+            res.status(200).send({payload: team})
         } catch (err) {
-            res.status(400).json({
-                success: false,
-                err: err.message
-            })
+            res.status(500).json({success: false, payload: err.message});
         }
     },
-    getTeams: async (req, res) => {
+    deleteTeam: async (req, res) => {
         try {
-            const {decoded} = req;
-            const teams = await TeamService.getTeams(decoded.id);
-            console.log(teams)
-
-            res.status(200).json({
-                success: true,
-                payload: teams.teams
-            })
+            const {id} = req.decoded
+            const {teamId} = req.params
+            const team = await TeamService.findOneById(teamId);
+            if (team.user_id !== id) throw new Error(`Bad credentials`)
+            const deleteTeam = await TeamService.delete(teamId);
+            res.status(200).send({payload: deleteTeam})
         } catch (err) {
-            console.log(err)
-            res.status(400).json({
-                error: err.message
-            })
+            res.status(500).send({err})
         }
     }
 }

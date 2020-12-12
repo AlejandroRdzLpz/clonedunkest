@@ -6,9 +6,8 @@ const {verifyToken} = require('../middlewares/index')
 
 const router = express.Router();
 
-router.post('/createTeam', verifyToken, TeamValidator.addTeam, TeamController.addTeam, UserController.addTeam)
+router.post('/createTeam', verifyToken, TeamController.addTeam)
 
-router.get('/teams', verifyToken, TeamController.getTeams)
-
+router.delete('/teams/:id', verifyToken, TeamValidator.delete, TeamController.deleteTeam)
 
 module.exports = router

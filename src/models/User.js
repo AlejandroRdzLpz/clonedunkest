@@ -34,14 +34,12 @@ const userSchema = new Schema({
         default: 'http;//picsum.com/200/300',
     },
     teams: [{
-        team: {
             type: Schema.Types.ObjectId,
-            ref: 'Teams'
-        }
-    }],
+            ref: 'teams'
+        }],
     leagues: [{
         type: Schema.Types.ObjectId,
-        ref: 'Leagues'
+        ref: 'leagues'
     }],
 },
 {timestamps: true},
@@ -64,6 +62,6 @@ userSchema.pre('save', async function() {
     }
 })
 
-const User = model('User', userSchema, "Users")
+const User = model('User', userSchema, 'Users')
 
 module.exports = User;

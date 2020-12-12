@@ -5,10 +5,16 @@ module.exports = {
         [Segments.BODY]: Joi
         .object()
         .keys({
-            user_id: Joi.number(),
             is_principal: Joi.boolean().required(),
             team_name: Joi.string().required(),
             players: Joi.array().required(),
         }),
     }),
+    delete: celebrate({
+    [Segments.PARAMS]: Joi
+      .object()
+      .keys({
+        postId: Joi.string().required(),
+      }),
+  }),
 }

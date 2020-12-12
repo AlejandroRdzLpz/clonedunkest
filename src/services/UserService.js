@@ -10,6 +10,4 @@ module.exports = {
         Object.assign(user, body);
         return user.save();
     },
-    addTeam: (user_id, team) => User.findByIdAndUpdate(user_id, {$push: {teams: team}}),
-
 }

@@ -8,4 +8,5 @@ const router = express.Router();
 router.patch('/users', verifyToken, UserValidator.update, UserController.update)
 
 
+
 module.exports = router

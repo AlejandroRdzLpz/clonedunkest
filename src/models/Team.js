@@ -5,10 +5,6 @@ const teamSchema = new Schema({
         type: String,
         default: '',
     },
-    user_id: {
-        type: Schema.Types.ObjectId,
-        ref: "Users"
-    },
     is_principal: {
         type: Boolean,
         default: true,
@@ -17,8 +13,12 @@ const teamSchema = new Schema({
         type: String,
         required: true,
     },
+    user_id: {
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+        required: true
+    },
     players: [{
-        _id: Schema.Types.ObjectId,
         player_photo: String,
         player_number: String,
         first_name: String,
@@ -31,6 +31,6 @@ const teamSchema = new Schema({
 {timestamps: true},
 );
 
-const Team = model('Team', teamSchema, "Teams")
+const Team = model('Teams', teamSchema)
 
 module.exports = Team;
