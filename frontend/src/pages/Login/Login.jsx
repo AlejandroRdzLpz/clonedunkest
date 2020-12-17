@@ -57,6 +57,7 @@ export default function Login() {
             <Input
               id="email"
               name="email"
+							onChange={(e) => setEmail(e.target.value)}
               startAdornment={
                 <InputAdornment position="start">
                   <AccountCircleRounded />
@@ -70,6 +71,7 @@ export default function Login() {
               id="password"
               name="password"
               type="password"
+							onChange={(e) => setPassword(e.target.value)}
               startAdornment={
                 <InputAdornment position="start">
                   <LockRounded />
@@ -95,7 +97,7 @@ export default function Login() {
 					</FormControl>
         </Grid>
       </Grid>
-			{ isAuth && <Redirect to="/" /> }
+			{ isAuth && <Redirect to="/user" /> }
     </div>
   );
 }

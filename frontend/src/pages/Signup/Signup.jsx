@@ -1,5 +1,6 @@
 import 'date-fns';
 import React, {useState, useContext} from 'react';
+import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -24,15 +25,16 @@ export default function Signup() {
   const [password, setPassword] = useState('')
   const [first_name, setFirstName] = useState('')
   const [last_name, setLastName] = useState('')
-  const [birth_date, setBirthDate] = useState(Date.now())
 	const [error, setError] = useState(null)
-  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+  const [birth_date, setBirthDate] = useState(new Date('2014-08-18T21:11:54'));
+  const history = useHistory()
 
   const handleForm = async (e) => {
     try {
       e.preventDefault()
       const body = { email, password, first_name, last_name, birth_date }
       const response = await auth.signup(body)
+      if(response) history.push('/user')
       
     } catch (error) {
       setError(error.response.data.error)
@@ -43,10 +45,6 @@ export default function Signup() {
   }
 
   const classes = useStyles();
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
 
   return (
     <div>
@@ -62,13 +60,13 @@ export default function Signup() {
 					<FormControl className={classes.margin}>
 						<InputLabel htmlFor="first_name">First Name</InputLabel>
 						<Input
-							id="first_name" name="first_name" required
+							id="first_name" name="first_name" required onChange={(e) => setFirstName(e.target.value)}
 						/>
           </FormControl>
           <FormControl className={classes.margin}>
             <InputLabel htmlFor="last_name">Last Name</InputLabel>
 						<Input
-							id="last_name" name="last_name" required
+							id="last_name" name="last_name" required onChange={(e) => setLastName(e.target.value)}
 						/>
 					</FormControl>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -78,10 +76,10 @@ export default function Signup() {
               variant="inline"
               format="MM/dd/yyyy"
               id="birth_date"
-              naame="birth_date"
+              name="birth_date"
               label="Birth Date"
-              value={selectedDate}
-              onChange={handleDateChange}
+              value={birth_date}
+              onChange={(e) => setBirthDate(e.target.value)}
               KeyboardButtonProps={{
                 'aria-label': 'change date',
               }}
@@ -90,13 +88,13 @@ export default function Signup() {
           <FormControl className={classes.margin}>
             <InputLabel htmlFor="email">E-mail</InputLabel>
 						<Input
-							id="email" name="email" required type="email"
+							id="email" name="email" required type="email" onChange={(e) => setEmail(e.target.value)}
 						/>
 					</FormControl>
           <FormControl className={classes.margin}>
             <InputLabel htmlFor="password">Password</InputLabel>
 						<Input
-							id="password" name="password" type="password"
+							id="password" name="password" type="password" onChange={(e) => setPassword(e.target.value)}
             />
             <Button onClick={handleForm} style={{backgroundColor: '#f27900', margin: '30px 0px'}}>Sign Up!</Button>
             <Card className={classes.margin} style={{ textAlign: 'center', margin: '3% 0', padding: '2%', display: 'flex', flexDirection: 'row', justifyContent: 'center', fontFamily: 'Roboto, sans-serif' }}>
@@ -111,7 +109,7 @@ export default function Signup() {
 					</FormControl>
   			</Grid>   
 			</Grid>
-      { isAuth && <Redirect to="/" /> }
+      { isAuth && <Redirect to="/user" /> }
 		</div>
   );
 }
