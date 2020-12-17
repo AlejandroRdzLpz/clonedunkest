@@ -34,7 +34,7 @@ export default function Signup() {
       e.preventDefault()
       const body = { email, password, first_name, last_name, birth_date }
       const response = await auth.signup(body)
-      if(response) history.push('/user')
+      if(response) history.push('/login')
       
     } catch (error) {
       setError(error.response.data.error)
