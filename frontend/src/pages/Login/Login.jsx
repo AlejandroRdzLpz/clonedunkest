@@ -97,7 +97,7 @@ export default function Login() {
 					</FormControl>
         </Grid>
       </Grid>
-			{ isAuth && <Redirect to="/user" /> }
+			{ isAuth && <Redirect to="/" /> }
     </div>
   );
 }

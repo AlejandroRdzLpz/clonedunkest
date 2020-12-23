@@ -45,7 +45,7 @@ module.exports = {
             })
 
         } catch (err) {
-            res.status(404).json({err: err.message})
+            res.status(404).json({error: err.message})
         }
     },
     update: async (req, res) => {
@@ -70,6 +70,18 @@ module.exports = {
             res.status(200).json({user: user});
         } catch (err) {
             res.status(500).json({error: err.message});
+        }
+    },
+    getUser: async (req, res) => {
+        try {
+            const {id} = req.params;
+            const user = await UserService.get(id);
+            res.status(200).json({
+                success: true,
+                payload: user
+            })
+        } catch (err) {
+            res.status(404).json({error: err.message});
         }
     }
 }

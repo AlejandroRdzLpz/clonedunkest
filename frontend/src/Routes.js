@@ -1,3 +1,7 @@
+import {
+  PrivateRoute
+} from './components/PrivateRoute'
+  
   import {
     Switch,
     Route
@@ -15,7 +19,8 @@
       <Switch>
         <Route exact path="/login" component={Login}/>
         <Route exact path="/signup" component={Signup}/>
-        <Route exact path="/user" component={User}/>
+        <PrivateRoute exact path="/" component={User}/>
+        <PrivateRoute exact path='/:id' component={User}/>
         <Route component={NotFound}/>
       </Switch>
   )

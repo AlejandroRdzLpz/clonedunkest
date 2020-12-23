@@ -1,14 +1,18 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
+import decode from 'jwt-decode'
+import {Redirect, useParams} from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import {Grid} from '@material-ui/core'
+import {Grid, Button, Paper} from '@material-ui/core'
 import Add from '@material-ui/icons/Add';
 import { Row, Item } from '@mui-treasury/components/flex';
 import { Info, InfoTitle, InfoSubtitle } from '@mui-treasury/components/info';
 import { useTutorInfoStyles } from '@mui-treasury/styles/info/tutor';
 import { useSizedIconButtonStyles } from '@mui-treasury/styles/iconButton/sized';
 import { useDynamicAvatarStyles } from '@mui-treasury/styles/avatar/dynamic';
+import { AuthContext } from '../../context/AuthContext.js'
+import { auth } from '../../api/api.js'
 
 const useStyles = makeStyles(() => ({
   action: {
@@ -24,39 +28,55 @@ const useStyles = makeStyles(() => ({
 export const User = () => {
   const styles = useStyles();
   const iconBtnStyles = useSizedIconButtonStyles({ padding: 6 });
-  const avatarStyles = useDynamicAvatarStyles({ radius: 12, size: 80 });
+  const avatarStyles = useDynamicAvatarStyles({ radius: 12, size: 100 });
+
+  const [firstName, getFirstName] = useState('');
+  const [lastName, getLastName] = useState('');
+  const [profileImg, getProfileImg] = useState('')
+
+  const { isAuth } = useContext(AuthContext)
+  const {id} = useParams();
+  const token = localStorage.getItem('clonedunkest-token')
+  const decoded = decode(token)
+  const userId = id || decoded.id
+
+  useEffect(() => {
+    const getUserData = async (userID) => {
+      const user = await auth.get(userID);
+      getFirstName(user.data.payload.first_name);
+      getLastName(user.data.payload.last_name);
+      getProfileImg(user.data.payload.profile_img);
+    }
+    getUserData(userId)
+  }, [])
+
+
   return (
-    <Grid
-  			container
-  			spacing={0}
-  			direction="column"
-  			alignItems="center"
-  			justify="center"
-  			style={{ minHeight: '100vh' }}
-			>
-        <Grid item xs={1} sm={3} />
-  			<Grid item xs={11} sm={6}>
-          <Row p={1.5} gap={2} bgcolor={'#f5f5f5'} borderRadius={16}>
-            <Item>
-              <Avatar
-                classes={avatarStyles}
-                src={
-                  'https://www.biography.com/.image/t_share/MTU0ODUwMjQ0NjIwNzI0MDAx/chris-hemsworth-poses-during-a-photo-call-for-thor-ragnarok-on-october-15-2017-in-sydney-australia-photo-by-mark-metcalfe_getty-images-for-disney-square.jpg'
-                }
-              />
-            </Item>
-            <Info position={'middle'} useStyles={useTutorInfoStyles}>
-              <InfoTitle>Kenny Foster</InfoTitle>
-              <InfoSubtitle>@fosterlive</InfoSubtitle>
-            </Info>
-            <Item ml={1} position={'middle'}>
-              <IconButton className={styles.action} classes={iconBtnStyles}>
-                <Add />
-              </IconButton>
-            </Item>
-          </Row>
+    <Grid container style={{marginTop: '10px'}} >
+    {!isAuth && !id && <Redirect to='/login' /> }
+      <Grid item xs={1} sm={3} />
+      <Grid item container xs={10} sm={6} >
+        <Paper style={{width: '100%', borderRadius: '12%'}}>
+        <Row p={1.5} gap={2} bgcolor={'#f5f5f5'} borderRadius={16} >
+          <Item>
+            <Avatar
+              classes={avatarStyles}
+              src={profileImg}
+            />
+          </Item>
+          <Info position={'middle'} useStyles={useTutorInfoStyles} style={{flexGrow: '1'}} >
+            <InfoTitle>{firstName} {lastName}</InfoTitle>
+            <InfoSubtitle>ID: {userId}</InfoSubtitle>
+          </Info>
+          <Item ml={1} position={'middle'} >
+            <Button className={styles.action} classes={iconBtnStyles}>
+              Add user to league <Add />
+            </Button>
+          </Item>
+        </Row>
+        </Paper>
+      </Grid>
+      <Grid item xs={1} sm={3} />
     </Grid>
-    <Grid item xs={1} sm={3} />
-  </Grid>
-  );
+  )
 };

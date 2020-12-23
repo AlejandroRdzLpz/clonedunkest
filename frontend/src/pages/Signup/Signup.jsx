@@ -34,7 +34,10 @@ export default function Signup() {
       e.preventDefault()
       const body = { email, password, first_name, last_name, birth_date }
       const response = await auth.signup(body)
-      if(response) history.push('/login')
+      if(response) {
+        alert("Please, Log In!")
+        history.push('/login')
+      }
       
     } catch (error) {
       setError(error.response.data.error)
@@ -109,7 +112,7 @@ export default function Signup() {
 					</FormControl>
   			</Grid>   
 			</Grid>
-      { isAuth && <Redirect to="/user" /> }
+      { isAuth && <Redirect to="/" /> }
 		</div>
   );
 }

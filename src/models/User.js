@@ -31,7 +31,7 @@ const userSchema = new Schema({
     },
     profile_img: {
         type: String,
-        default: 'http;//picsum.com/200/300',
+        default: 'http://picsum.photos/200/300',
     },
     teams: [{
             type: Schema.Types.ObjectId,

@@ -7,4 +7,5 @@ const api = axios.create({
 export const auth = {
   signup: (body) => api.post('/signup', body),
   login: (body) => api.post('/login', body),
+  get: (id) => api.get(`/user/${id}`)
 }
