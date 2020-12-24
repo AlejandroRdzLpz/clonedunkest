@@ -10,7 +10,8 @@ import {
   import {
     Login,
     Signup,
-		User,
+    User,
+    Players,
 		NotFound
   } from './pages/index.js'
   
@@ -19,8 +20,9 @@ import {
       <Switch>
         <Route exact path="/login" component={Login}/>
         <Route exact path="/signup" component={Signup}/>
+        <Route exact path="/players" component={Players}/>
         <PrivateRoute exact path="/" component={User}/>
-        <PrivateRoute exact path='/:id' component={User}/>
+        <PrivateRoute exact path="/:id" component={User}/>
         <Route component={NotFound}/>
       </Switch>
   )

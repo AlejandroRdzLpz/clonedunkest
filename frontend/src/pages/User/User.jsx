@@ -3,10 +3,9 @@ import decode from 'jwt-decode'
 import {Redirect, useParams} from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import {Grid, Button, Paper} from '@material-ui/core'
+import {Grid, Button, Paper, Typography} from '@material-ui/core'
 import Add from '@material-ui/icons/Add';
-import { Row, Item } from '@mui-treasury/components/flex';
+import { Row, Item, Column } from '@mui-treasury/components/flex';
 import { Info, InfoTitle, InfoSubtitle } from '@mui-treasury/components/info';
 import { useTutorInfoStyles } from '@mui-treasury/styles/info/tutor';
 import { useSizedIconButtonStyles } from '@mui-treasury/styles/iconButton/sized';
@@ -32,7 +31,8 @@ export const User = () => {
 
   const [firstName, getFirstName] = useState('');
   const [lastName, getLastName] = useState('');
-  const [profileImg, getProfileImg] = useState('')
+  const [profileImg, getProfileImg] = useState('');
+  const [teams, setTeams] = useState([]);
 
   const { isAuth } = useContext(AuthContext)
   const {id} = useParams();
@@ -43,9 +43,12 @@ export const User = () => {
   useEffect(() => {
     const getUserData = async (userID) => {
       const user = await auth.get(userID);
+      const teamsArray = await auth.getTeams(token);
+      console.log(teamsArray)
       getFirstName(user.data.payload.first_name);
       getLastName(user.data.payload.last_name);
       getProfileImg(user.data.payload.profile_img);
+      setTeams(teamsArray.data.teams)
     }
     getUserData(userId)
   }, [])
@@ -74,6 +77,22 @@ export const User = () => {
             </Button>
           </Item>
         </Row>
+        <Grid container>
+          <Column>
+            <Typography>{firstName}'s Teams</Typography>
+            {teams.map(team => {
+              return (
+                <Row key={team._id}>
+                  <Avatar classes={avatarStyles} src={team.team_logo} />
+                  <Item>
+                    <Typography>{team.team_name}</Typography>
+                    <Typography>{team._id}</Typography>
+                  </Item>
+                </Row>
+              )
+            })}
+          </Column>
+        </Grid>
         </Paper>
       </Grid>
       <Grid item xs={1} sm={3} />
